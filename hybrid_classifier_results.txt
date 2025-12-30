@@ -1,0 +1,25 @@
+HYBRID CLASSIFIER BREEDING TARGET VALIDATION
+================================================================================
+
+Sucrose Transporter (SUT1) (XP_002465781.1): PASS
+  Expected: 0, Got: 0
+  Confidence: 0.9621
+  Method: ML_ONLY
+
+High-Affinity Nitrate Transporter 2.4 (NRT2.4) (XP_002455791.2): PASS
+  Expected: 0, Got: 0
+  Confidence: 0.8529
+  Method: ML_PRIORITY
+
+SbMATE (Aluminum Tolerance) (ABS89149.1): PASS
+  Expected: 0, Got: 0
+  Confidence: 0.8863
+  Method: ML_ONLY
+
+AKT1 (Potassium Channel) (XP_021312865.1): PASS
+  Expected: 1, Got: 1
+  Confidence: 0.6206
+  Method: ENSEMBLE_AGREE
+
+
+Final Score: 4/4

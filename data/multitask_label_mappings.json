@@ -1,0 +1,38 @@
+{
+  "subfamily_to_idx": {
+    "ABC": 0,
+    "AMT": 1,
+    "Anion": 2,
+    "Aquaporin": 3,
+    "Cation": 4,
+    "MATE": 5,
+    "SWEET": 6,
+    "Unknown": 7
+  },
+  "idx_to_subfamily": {
+    "0": "ABC",
+    "1": "AMT",
+    "2": "Anion",
+    "3": "Aquaporin",
+    "4": "Cation",
+    "5": "MATE",
+    "6": "SWEET",
+    "7": "Unknown"
+  },
+  "substrate_to_idx": {
+    "Anion": 0,
+    "Metal": 1,
+    "Nitrogen": 2,
+    "Organic": 3,
+    "Sugar": 4,
+    "Unknown": 5
+  },
+  "idx_to_substrate": {
+    "0": "Anion",
+    "1": "Metal",
+    "2": "Nitrogen",
+    "3": "Organic",
+    "4": "Sugar",
+    "5": "Unknown"
+  }
+}

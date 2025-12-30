@@ -1,0 +1,6 @@
+BREEDING TARGET VALIDATION REPORT
+=================================
+Sucrose Transporter (SUT1) (XP_002465781.1): PASS (Conf: 0.9520)
+Nitrate Transporter (NRT1.5) (XP_002439116.1): FAIL (Conf: 0.8516)
+SbMATE (Aluminum Tolerance) (ABS89149.1): PASS (Conf: 0.9019)
+AKT1 (Potassium Channel) (XP_021312865.1): FAIL (Conf: 0.5794)

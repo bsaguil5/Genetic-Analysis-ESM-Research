@@ -1,0 +1,13 @@
+EXPERT POSITIVE CONTROL REPORT
+==========================================================================================
+Target                         | ID              | Exp   | Pred  | Conf     | Status
+------------------------------------------------------------------------------------------
+SbSUT1 (Sucrose Transporter)   | XP_002465781.1  | 0     | 0     | 0.9621   | PASS
+SbSWEET13 (Sugar Transporter)  | XP_021301501.1  | 0     | 0     | 0.9078   | PASS
+SbPHYA (Phytochrome A)         | NP_001410898.1  | 1     | 1     | 0.7235   | PASS
+SbADH1 (Alcohol Dehydrogenase) | XP_002438004.2  | 1     | 1     | 0.5840   | PASS
+SbGln1 (Glutamine Synthetase)  | XP_021319069.1  | 1     | 1     | 0.6289   | PASS
+------------------------------------------------------------------------------------------
+FINAL AGREEMENT SCORE: 5/5
+
+CONCLUSION: MODEL AGREES WITH SCIENTIFIC CONSENSUS.

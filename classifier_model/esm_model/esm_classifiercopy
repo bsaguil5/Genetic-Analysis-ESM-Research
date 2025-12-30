@@ -1,0 +1,547 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from typing import Optional
+import config
+''' This is a file for me to recreate the esm_classifier.py file and understand it 
+i have started with understanding the main headers (functions and classes) at the root
+of the file (no indents) and have a decent grasp of it now.
+
+i'm now moving onto understanding header by header (each class and main def) starting with AttentionPooling,
+which i have learned is for turning the ESM embeddings into a single summary vector for the neural network to process
+
+'''
+
+
+class AttentionPooling(nn.Module): # converts the embeddings into one vector
+    def __init__(self, input_dim: int, hidden_dim: int = 128):
+
+    def forward(self, embeddings: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+
+    
+
+class ESMClassifier(nn.Module):
+
+class FocalLoss(nn.Module):
+
+def get_loss_type(loss_type: str = None):
+
+def create_esm_classifier(esm_embed_dim: int = None) -> ESMClassifier:
+
+
+
+
+
+
+
+
+
+
+
+
+    """
+    
+  AttentionPooling - Reduces sequence of embeddings to single vector using learned attention weights
+
+  ESMClassifier - Main model that takes ESM embeddings → attention pooling → classification layers → binary prediction
+    ESM embeddings - Numbers representing the protein sequence
+
+  → attention pooling - Combine all those numbers into one summary vector
+
+  → classification layers - Neural network processes that vector
+
+  → binary prediction - Final yes/no answer (pathogenic or benign)
+    > so by your description of ESMClassifier, it takes the ESM embeddings, combines them into one summary vector with
+attention pooling, uses classification layers (neural network) to process that summary vector, then makes a prediction?
+    ESMClassifier takes the ESM embeddings, then combines them into one summary vectory with attention pooling, uses classiification layers (neural network) to process that summary vectory, then make a prediction
+
+  FocalLoss - Loss function that focuses training on hard-to-classify examples (addresses class imbalance)
+
+  get_loss_functions - Returns appropriate loss function based on type ("focal" or default BCE)
+
+  create_esm_classifier - Factory function that builds and returns configured ESMClassifier instance
+
+  
+
+  - arrow means that it returns an ESMClassifier object -> but this is just symbolism it doesn't do anything it just tells the reader what to expect
+  - nn.Module is pytorch's base class for all neural network components you can use it to create custom layers/models
+  - esm_embed_dim is an int that will tell the classifier how big the input is going ot be 
+  - it is the size of the ESM embedding vectors - we're using 480 for ESM2-35M
+
+  ● Almost!
+
+  Multiple matrices, not one big one. Looking at the classifier (lines 123-131), there are 3 Linear layers = 3 weight
+  matrices:
+  1. First layer transforms vector
+  2. ReLU activation
+  3. Second layer transforms again
+  4. ReLU activation
+  5. Third layer → final prediction
+
+  So the vector passes through 3 transformations sequentially.
+
+  Yes to your second part - gradients calculated for ALL weights across ALL layers, optimizer updates them all.
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+QUIZ 3:
+
+● Quiz:
+
+  1. What does AttentionPooling do to a sequence of
+  embeddings?
+  2. What are the 4 steps ESMClassifier performs (ESM
+  embeddings → ?)
+  3. When would you use FocalLoss vs BCEWithLogitsLoss?
+  4. What does get_loss_function return?
+  5. What does nn.Module mean when you see class
+  ESMClassifier(nn.Module)?
+  6. What does esm_embed_dim represent?
+  7. If a protein has 150 amino acids and uses ESM2-35M,
+  how many embeddings are there and what size is each one?
+  8. In batching, if you have 32 proteins, how many
+  predictions do you get?
+  9. What are "weights" in a neural network?
+  10. Does the gradient get applied uniformly to all
+  weights, or does each weight get its own gradient?
+  11. What's the order: loss calculation → gradient →
+  optimizer, or something else?
+  12. How many Linear layers (weight matrices) are in the
+  self.classifier neural network?
+
+my answers:
+1. AttentionPooling takes a sequence of embeddings and turns them into one summary vector (how does it do this? is it word2vec or something else?)
+2. ESMClassifier takes the embeddings, runs it through the AttentionPooling turning it into one summary vector, then the summary vector is passed through the neural network, wherein the neural network
+actually learns the relationships in a way and makes a prediction. (what does the neural network do at each layer? makes a prediction? no, right? because the prediction happens at the end so what's it doing there?)
+I don't know if it happens here or in train, but the prediction is then evaluated to see if it was right or wrong with the proper loss calculation, gradient calculation, then optimizer (does this happen here or is this model file just repsonsible for making a prediction?)
+3. FocalLoss for dataset imbalance, BCEWithLogitsLoss otherwise.
+4. get_loss_function returns a loss type object.
+5. nn.Module means we inherit from the base neural network class from pytorch that allows us to make neural networks and layers
+6. esm_embed_dim represents how large each of the embeddings in a protein amino acid sequence is going to be.
+7. if it has 150 amino acids then there are 150 embeddings and since it's ESM2-35M, each embedding is 480(? not sure if that number is right)
+8. In batching if you have 32 proteins you get 32 predictions, each of the predictions' losses is calculated and averaged (again i'm not sure if this part happens in train.py or here)
+9. the weight are cells in a matrix.
+10. Gradient does not get applied uniformly to all weights, each weight gets its own gradient
+11. that is the correct order.
+12. there are 3 layers.
+
+CORRECTIONS to my own QUESTIONS:
+  #1: "how does it do this? is it word2vec or something
+  else?"
+  AttentionPooling uses learned attention weights (lines
+  31-34 in esm_classifier.py). It's a small neural network
+  that learns which positions matter most during training.
+  Not Word2Vec.
+
+  #2: "what does the neural network do at each layer?"
+  Each layer transforms the vector into increasingly
+  abstract features. Layer 1 might detect simple patterns,
+  Layer 2 combines those into complex patterns, Layer 3
+  makes the final decision. Only the last layer outputs a
+  prediction.
+
+  #2 continued: "does this happen here or is this model
+  file just responsible for making a prediction?"
+  Just prediction (forward pass). Loss/gradient/optimizer
+  happen in train.py.
+
+ #7: "not sure if that number is right"
+  480 is correct for ESM2-35M.
+
+  #8: "i'm not sure if this part happens in train.py or
+  here"
+  Happens in train.py - this file just defines the loss
+  functions, doesn't calculate/average them.
+
+
+goal -> now that we have a broad understanding of the main headers, let's go down into each function to understand them
+
+
+
+10-10-2025
+ Clear now?
+
+> can you quiz me
+
+● Alright! Let's test your understanding! 🧪
+
+  Quiz on AttentionPooling:
+
+  Question 1 (Easy):
+
+  You have a protein with sequence "MKTAYIAK" (8 amino
+  acids). After passing through ESM2-35M, how many
+  embeddings do you get, and what size is each one?
+
+  ---
+  Question 2 (Medium):
+
+  attention_weights = self.attention(embeddings)
+  If embeddings has shape (32, 150, 480), what shape is
+  attention_weights after this line? What does each
+  dimension represent?
+
+  ---
+  Question 3 (Medium):
+
+  Why do we use masked_fill(~mask, float('-inf')) instead
+   of just setting padding positions to 0?
+
+  ---
+  Question 4 (Harder):
+
+  Explain what happens in this line using concrete
+  numbers:
+  pooled = torch.sum(embeddings *
+  attention_weights.unsqueeze(-1), dim=1)
+  Assume one protein with 3 positions, embeddings are
+  5-dimensional (not 480), and attention weights after
+  softmax are [0.5, 0.3, 0.2]
+
+  ---
+  Question 5 (Conceptual):
+
+  Why does going 480→128→1 give better attention scores
+  than going directly 480→1?
+
+  ---
+  Ready? Answer whichever ones you want to try!
+
+  > 
+  question 1: with 8 amino acids, passing through ESM2-35M you'll get 8
+embeddings each with size of 480 dimensions. 
+
+question 2: it should have (32, 150, 1) as the shape. 32 represents the batch size, 150 is the number of
+positions in the sequence, and 1 is the truncated score. 
+
+question 3. i think we do -infinity instead of just 0, because 0 might be an actual value that we
+didn't want to mask. -infinity distinguishes it for us. 
+CORRECTION - ALMOST:
+it's because of softmax. 0 values might be nonzero after softmaxing. -infinity will not be nonzero after softmaxing.
+
+question 4. we're  basically taking the embeddings vector that is in the shape (16,
+positionlength, 480) times the weight vector that will be in the shape (16,
+positionlength, 1). this will take the vector with all the information on
+batches and each positions 480 dimension vector, and scale each position's 480
+dimension vector by the score value. so you might have embeddings which
+contains: protein 1: [.5, .7, .3, .8, ...480 nums total] for position 1, and
+multiply this by the score which might be like .5, which will half all the
+values. this is done for all the positions in each protein. 
+
+
+question 5. going  from 480->128->1 truncation allows you context between dimensions. if you
+truncate from 480->128, you might get relationship information, like things
+happened when dimension 1 and dimension 5 were lowered, and so we need to pay
+attention to those together, as opposed to separate checking. if you go from
+480->1 immediately, you truncate linearly i think, and lose that information.
+it's kind of like going from 3 dimensions to 1 dimension, you lose information
+on circles, squares, and things like that if you squash from a sphere to a dot.
+ you can do it, but if you go from sphere to circle first, you can understand
+more about the 3rd dimension without cutting out too much
+
+> for 4 that explanation is correct though, right? the multiplication line
+multiplies "embeddings" which contains the entire batch of proteins, each
+protein's full sequence, with each position of the sequence having 480 numbers,
+ and this vector is multiplied by the score vector?
+
+● YES! Your explanation for #4 is 100% correct!
+
+  Let me confirm what you said:
+
+  ✅ embeddings: (16, positionlength, 480) - entire batch, all positions, all
+  480 numbers
+
+  ✅ attention_weights.unsqueeze(-1): (16, positionlength, 1) - scores for each
+   position
+
+  ✅ Multiplication: Each position's 480-number array × its single score
+
+  ✅ Broadcasting: PyTorch multiplies across all 16 proteins, all positions
+  simultaneously
+
+  ✅ Example you gave: Position 1 has [0.5, 0.7, 0.3, 0.8, ...] (480 nums),
+  score is 0.5 → result is [0.25, 0.35, 0.15, 0.4, ...]
+
+  ✅ Happens for everything at once - all proteins, all positions, in parallel
+
+  Your understanding is spot-on! The confusion was just that I asked for a
+  specific tiny example (3 positions, 5-dim), but you explained the general
+  case perfectly.
+
+  Full score on #4! 5/5 total! 🎉
+
+  Ready for ESMClassifier?
+
+   ---
+  What embeddings (16, 200, 480) looks like:
+
+  One position = VECTOR (480 numbers):
+
+  [0.5, -0.3, 0.8, 0.1, ..., 0.2]  ← 480 numbers in a row
+
+  ---
+  One protein = MATRIX (200 × 480):
+
+  Position 1:   [0.5, -0.3, 0.8, ..., 0.2]  ← 480 columns
+  Position 2:   [0.1,  0.7, -0.4, ..., 0.9]
+  Position 3:   [-0.2, 0.3, 0.5, ..., 0.4]
+  ...
+  Position 200: [0.4, -0.1, 0.7, ..., 0.6]
+                ↑
+              200 rows
+
+  You're right - 200 rows, 480 columns!
+
+  ---
+  One batch = 3D TENSOR (16 stacked matrices):
+
+  Think of it as 16 matrices stacked on top of each other:
+
+  Protein 1:  [200×480 matrix]
+  Protein 2:  [200×480 matrix]
+  Protein 3:  [200×480 matrix]
+  ...
+  Protein 16: [200×480 matrix]
+              ↑
+           16 layers deep
+
+  Visual analogy: Like a deck of 16 cards, where each card is a 200×480
+  spreadsheet!
+
+  ---
+  Summary:
+
+  - (480) = vector (1D)
+  - (200, 480) = matrix (2D) - one protein
+  - (16, 200, 480) = tensor (3D) - batch of 16 proteins
+
+  Clear?
+
+  Let's see it with real meaning:
+
+  Position 1: [0.8,  -0.3, 0.2, ...]
+  Position 2: [0.1,   0.7, 0.5, ...]
+  Position 3: [0.9,  -0.1, 0.3, ...]
+               ↑      ↑     ↑
+          hydro-  charge  structure
+          phobic  signal  signal
+
+  After weighted sum with scores [0.3, 0.5, 0.2]:
+
+  Dimension 0 (hydrophobic): 0.3×0.8 + 0.5×0.1 + 0.2×0.9 = 0.47
+    "The protein has moderate overall hydrophobicity,
+     weighted by important positions"
+
+  Dimension 1 (charge): 0.3×(-0.3) + 0.5×0.7 + 0.2×(-0.1) = 0.24
+    "The protein has slight positive charge overall,
+     weighted by important positions"
+
+  The summary vector captures AGGREGATE features of the whole protein!
+
+  ---
+  Why this works:
+
+  ESM2 was trained such that:
+  - Same dimension = same type of information across all positions
+  - Adding them up = combining that feature across the sequence
+  - Attention weights = focus on important positions
+
+  It's like:
+  - Dimension 0 asks "how hydrophobic?" at EVERY position
+  - Adding them: "what's the overall hydrophobicity pattern?"
+  - Dimension 1 asks "how charged?" at EVERY position
+  - Adding them: "what's the overall charge pattern?"
+
+  ---
+  The "magic":
+
+  ESM2 learned 480 different "questions" to ask about each position, and those
+  same 480 questions are meaningful when aggregated across the protein!
+
+  Your skepticism is valid - this ONLY works because ESM2's embedding space was
+   learned to have this property! If the dimensions were random, adding
+  wouldn't make sense.
+
+  Does that explain the seemingly impossible math?
+
+   YES! Exactly - it's VERY much a black box thing!
+
+  ---
+  What we know for sure:
+
+  ✅ Each dimension is consistent across positions - dimension 47 means "the
+  same thing" at position 1 and position 200
+
+  ✅ Weighted averaging works empirically - gives us useful summary vectors
+  that classify well
+
+  ✅ Some dimensions correlate with known features - researchers have found:
+  - Dimension X correlates with hydrophobicity
+  - Dimension Y correlates with secondary structure
+  - Dimension Z correlates with evolutionary conservation
+
+  ---
+  What we DON'T know:
+
+  ❌ What most of the 480 dimensions actually represent - probably complex
+  combinations of features
+
+  ❌ Why ESM2 chose these specific 480 patterns - it learned them from data,
+  not designed by humans
+
+  ❌ The exact "meaning" of dimension 247 - we just know it encodes something
+  useful
+
+  ---
+  The honest answer:
+
+  We know it works (95%+ accuracy), and we have theories about WHY, but we
+  can't decode what each dimension means in human terms.
+
+  It's the same empirical approach: Test it, validate it works, use it - even
+  if we don't fully understand the internal representation.
+
+  ---
+  So yes - you're intellectually satisfied with a black box explanation, and
+  that's the RIGHT response here! This is fundamentally a learned
+  representation we can't fully interpret.
+
+  Feeling better about it?
+
+
+   ---
+  The process:
+
+  1. ONE loss measures total error: 0.8
+  2. Calculus calculates gradients for EVERY weight:
+    - All attention network weights (61,568 of them)
+    - All classifier weights (however many there are)
+    - Each gradient says: "change me by this amount to reduce loss"
+  3. ALL weights update simultaneously:
+  attention_weight_1 = attention_weight_1 - (learning_rate × gradient_1)
+  attention_weight_2 = attention_weight_2 - (learning_rate × gradient_2)
+  ...
+  classifier_weight_1 = classifier_weight_1 - (learning_rate × gradient_1)
+  classifier_weight_2 = classifier_weight_2 - (learning_rate × gradient_2)
+  ...
+  4. Next batch → new loss → new gradients → update again
+  5. Repeat thousands of times → loss gets smaller → model gets better!
+
+  ---
+  Everyone works together to minimize the SAME loss!
+
+  Attention learns: "Make better summary vectors to help reduce loss"
+  Classifier learns: "Make better predictions to reduce loss"
+
+  You've completely understood backpropagation! 🎉
+
+
+
+
+
+A1: purpose of the AttentionPooling class is to take the embedding we get after passing our
+protein into ESM2 and create a summary vector from it that we can feed into a neural network, since
+it's too big on it's own and doesn't have context and would be too linear.
+If we had input of an embedding (16, 200, 480), the result would be (16, 480). 
+We do this by having a smaller mini neural network in AttentionPooling called the attention mechanism
+that outputs a score vector that can be applied to the original vector and then using linear algebra we get one
+summary vector!
+
+A2: well initing the AttentionPooling sets up a neural network starting with hidden_dim neurons
+each having input_dim amount of weights. the neural network architecture is called attention mechanism.
+if you had __init__(480,128), for example, you set up a neural network layer with 128 neurons each with
+480 weights/numbers
+
+CORRECTION: i forgot to talk about the other layers of the neural network
+
+A3: AttentionPooling.forward(embeddings,mask) inputs are the embedings that we receive from ESM2 and
+mask helps pytorch know which positions are real or masks, by saying the uniform length that the vectors 
+will be. input shapes are (batch_size, length, embed_dim) for embeddings and (batch_szie, length) for mask.
+since we're calling hte forward method, my intuition is that the output shape is going to be the logits,
+which are just raw predictions, so it's just one number
+
+CORRECTION: AttentionPooling.forward refers to the forward method inside of the AttentionPooling class.
+so the answer is that it outputs a summary vector.
+
+A4: ESMClassifier class sets up the model/blueprint for training. it sets up the structure of the neural network
+that will be used in training and then this neural network will output logits.
+
+A5: the three main compoents i think are self.projection, self.pooling, and self.classifier. projection
+allows us to truncate a embeddings that is too big on the onset.
+self.pooling is the method of summary-vectorizing the embeddings that we get
+self.classifier is our actual neural network.
+
+A6: _init_weights() uses Xavier method which is a mathematical way to decide what all the weights are going to be 
+in each neural network layer. it's important because all the layers in the neural networks in pytorch memory
+need to start out with some weight, and it's better than randomly choosing.
+
+A7: the complete flow in forward off the top of my head is to just basically set everything and choose
+what we're doing. we see if we're going to project? and if we are then we'll use the mini neural network to project
+if not, we'll skip. for self.pooling_strategy we're going to define which pooling mechanism we want to use based
+on what we have chosen earlier, either it's going to be attention, max, or average. 
+if it's attention, for example, then we'll pass it through the AttentionPooling class, and if we don't have a mask,
+we'll pass it through without a max???
+
+CORRECTION: MASK is used in ALL pooling strategies.
+
+A8. forward() returns logits.
+
+CORRECTION: returns logits with shape (batch_size, num_classes) (16, 1) and the 1 represents the one raw score
+so in the matrix you have like 16 rows of one logit score per row.
+
+
+
+
+
+
+
+
+10-13-2025
+1. the final output shape of AttentionPooling when given embeddings of shape (16, 200, 480) is 
+one summary vector for the proteins so it's (16, 480)
+2. this intermediate step enables the neural network to understand relationships between dimensions because if you went 
+straight from 480 to the output 1, you would lose context between dimensions. for example,
+the 128 dimension might "look at" the 480 dimension and be able to say something like, 
+"if this dimension of the 480 is low and this other dimension of the 480 is also low,
+then this type of output occurs". it enables the neural network to understand more dimensional 
+context and relationships, without which it would just be a linear pass and lose that
+3. we call squeeze so that the vector becomes (16, 200) and so that each individual attention score
+or weight just is a number in the array, rather than a number with brackets around it.
+makes extracting the attention scores easier.
+4. we essentially look at where we want to place the masks and put them there by filling that spot
+with a -infinity. this is because we want to make it so that this specific position does not
+contribute anything to the vector after sigmoid. if we just did 0, it still might contribute
+something at that specific spot. -infinity gets rid of this possibility
+5. softmax makes the padding positions 0, because there are no contributions from that position to the total
+6. we use a projection if the embedding vectors are too big. i forget what the specific number is but
+it's a little over 500 dimensions from what i remember. this solves the problem of overfitting
+and the dimensions being too big, which would also take a longer compute time
+7. i won't answer this question because it's not the type of quiz question i'm looking for,
+since this doesn't really show that much understand, i could have just seen what was passed into the original
+variable and then do simple arithmetic to get the solution
+8. self._init_weights() gives the parameters / weights in the neurons their initial values.
+this is better than randomization because the random weights don't necessarily reflect the result that
+we would want, since it's random. but Xavier initialization allows us to start off with weights
+that in general are closer to the weights that we would correct the neural network to, than randomization
+9. you can do the AttentionPooling (which is the one that we implemented in the first class), avg, or max
+AttentionPooling uses the attention mechanism to receive the embeddings from ESM2, and then
+it returns one summary vector of the embeddings, containing context and other valuable information for training
+min, just takes the average of the original vector positions and puts them into one summary vector
+max just takes the largest of the original vector and makes that the new summary vector
+
+10. logits are the raw scores. to convert we would need to round to 0 or 1 to get a real prediction
+11. you would add to the 100 lenghted proteins a mask of 50 positions where the 50 positions contribute nothing,
+they just make the entire matrix uniform.
+
+    """

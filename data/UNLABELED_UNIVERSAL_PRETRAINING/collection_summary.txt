@@ -1,0 +1,20 @@
+Universal Protein Collection Summary
+==================================================
+
+Date: 2025-11-21 02:14:02
+Total sequences: 47,667
+Length range: 50-1000 amino acids
+
+Statistics:
+  Mean length: 378.9 AA
+  Median length: 344.0 AA
+  Min length: 50 AA
+  Max length: 1000 AA
+
+Purpose:
+  - Masked language model pre-training
+  - Testing Transformer vs Mamba scaling
+  - Universal (all organisms) for fair comparison to ESM2
+
+Files:
+  - universal_proteins_47667.csv

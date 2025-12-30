@@ -1,0 +1,34 @@
+[2025-12-20 15:26:42] ==================================================
+[2025-12-20 15:26:42] DATASET CORRECTION STARTED
+[2025-12-20 15:26:42] ==================================================
+[2025-12-20 15:26:42] Backup created: data\backups\bad_boys_20251220_152642.csv
+[2025-12-20 15:26:42] Backup created: data\backups\good_boys_20251220_152642.csv
+[2025-12-20 15:26:42] Backup created: data\backups\labeled_sequences_20251220_152642.csv
+[2025-12-20 15:26:42] Before fix - good_boys: 100, bad_boys: 95
+[2025-12-20 15:27:35] ==================================================
+[2025-12-20 15:27:35] DATASET CORRECTION STARTED
+[2025-12-20 15:27:35] ==================================================
+[2025-12-20 15:27:35] Backup created: data\backups\bad_boys_20251220_152735.csv
+[2025-12-20 15:27:35] Backup created: data\backups\good_boys_20251220_152735.csv
+[2025-12-20 15:27:35] Backup created: data\backups\labeled_sequences_20251220_152735.csv
+[2025-12-20 15:27:35] Before fix - good_boys: 100, bad_boys: 95
+[2025-12-20 15:27:35] Found 1 NIPA4 entries to move:
+[2025-12-20 15:27:35]   - probable magnesium transporter NIPA4 isoform X1
+[2025-12-20 15:27:35] NIPA4 FIXED: Moved 1 entries from good_boys to bad_boys
+[2025-12-20 15:27:35] After fix - good_boys: 99, bad_boys: 96
+[2025-12-20 15:27:35] Existing sequences: 192
+[2025-12-20 15:27:35] Target: 500 new non-transporters
+[2025-12-20 15:27:52] Fetched 500 new non-transporters
+[2025-12-20 15:27:52] Updated good_boys.csv: 599 total entries
+[2025-12-20 15:27:52] Adding 100 Maize transporters for diversity
+[2025-12-20 15:27:59] Fetched 100 Maize transporters
+[2025-12-20 15:27:59] Updated bad_boys.csv: 196 total entries
+[2025-12-20 15:28:00] Removed 3 duplicate sequences
+[2025-12-20 15:28:00] Final dataset: 792 total (194 transporters, 598 non-transporters)
+[2025-12-20 15:28:00] ==================================================
+[2025-12-20 15:28:00] DATASET CORRECTION COMPLETED
+[2025-12-20 15:28:00]   NIPA4 fixed: 1
+[2025-12-20 15:28:00]   New negatives: 500
+[2025-12-20 15:28:00]   New Maize transporters: 100
+[2025-12-20 15:28:00]   Final dataset: 792
+[2025-12-20 15:28:00] ==================================================

@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+.venv_TEMP/
+env/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Cache and temporary files
+cache/
+*.pkl
+*.pth
+*.ckpt
+checkpoints/
+*.tmp
+*.bak
+~$*
+
+# AI-generated documentation (exclude all markdown docs except essential READMEs)
+*.md
+!README.md
+!data/README.md
+!classifier_model/README.md
+!classifier_model/esm_model/README.md
+
+# Papers and drafts
+*.pdf
+*.docx
+*.doc
+paper_drafts/
+Z-review_paper_materials/
+
+# Results and figures
+results/
+publication_figures/
+report_figures/
+
+# Large data files
+project_files.zip
+*.zip
+*.tar.gz
+
+# Experimental/unrelated data
+project_files/
+archive_legacy_2025/
+archive_legacy_platinum_list/
+future_experiments/
+
+# AI assistant files
+.claude/
+.gemini/
+
+# Test predictions and outputs
+test_predictions_*.csv
+*_output.log
+*.log
+retrain_log.txt
+retrain_cpu_log.txt
+multitask_training.log
+
+# Scripts for transfer/cleanup
+cleanup_for_transfer.*
+copy_for_transfer.*
+*.bat
+!requirements.txt
+
+# Specific exclusions
+LOGS/
+md/
+verification/
+Note From Brandon
+FINAL_PROJECT_MANIFEST.txt
+*_predictions.csv

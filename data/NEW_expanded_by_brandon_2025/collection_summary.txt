@@ -1,0 +1,39 @@
+======================================================================
+HIGH CONFIDENCE SORGHUM PROTEIN COLLECTION SUMMARY
+======================================================================
+Date: 2025-11-20 16:55:15
+Collected by: Brandon Saguil
+Quality: HIGH CONFIDENCE ONLY (no putative/probable/predicted)
+
+TRANSPORTER CATEGORIES:
+----------------------------------------------------------------------
+  SWEET: 0
+  SUC_SUT: 3
+  ABC: 78
+  Aquaporin: 36
+  Amino_acid_transporter: 33
+  Nutrient_transporter: 24
+  Ion_transporter: 40
+  TOTAL: 214
+
+NON-TRANSPORTER CATEGORIES:
+----------------------------------------------------------------------
+  Kinase: 100
+  Phosphatase: 56
+  Transcription_factor: 77
+  TOTAL: 233
+
+FINAL DATASET:
+----------------------------------------------------------------------
+  Total sequences: 592
+  Transporters: 300
+  Non-transporters: 292
+  Original data: 192
+  Brandon's new data: 400
+
+FILES CREATED:
+----------------------------------------------------------------------
+  data\NEW_expanded_by_brandon_2025\transporters_HIGH_CONFIDENCE.csv
+  data\NEW_expanded_by_brandon_2025\non_transporters_HIGH_CONFIDENCE.csv
+  data\NEW_expanded_by_brandon_2025\SWEET_transporters_SPECIAL.csv
+  data\NEW_expanded_by_brandon_2025\merged_HIGH_CONFIDENCE_dataset.csv
